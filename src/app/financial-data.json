@@ -1,0 +1,152 @@
+[
+  {
+    "id": 1,
+    "tipo": "receita",
+    "descricao": "Salário Mensal",
+    "categoria": "Salário",
+    "origem": "Conta Corrente",
+    "origemTipo": "conta",
+    "data": "2024-01-05",
+    "valor": 5000.00
+  },
+  {
+    "id": 2,
+    "tipo": "despesa",
+    "descricao": "Supermercado",
+    "categoria": "Alimentação",
+    "origem": "Cartão Nubank",
+    "origemTipo": "cartao",
+    "data": "2024-01-06",
+    "valor": -350.50
+  },
+  {
+    "id": 3,
+    "tipo": "despesa",
+    "descricao": "Conta de Luz",
+    "categoria": "Utilidades",
+    "origem": "Conta Corrente",
+    "origemTipo": "conta",
+    "data": "2024-01-07",
+    "valor": -120.00
+  },
+  {
+    "id": 4,
+    "tipo": "transferencia",
+    "descricao": "Transferência para Poupança",
+    "categoria": "Investimento",
+    "origem": "Conta Corrente",
+    "origemTipo": "conta",
+    "data": "2024-01-08",
+    "valor": -1000.00
+  },
+  {
+    "id": 5,
+    "tipo": "receita",
+    "descricao": "Freelance Design",
+    "categoria": "Trabalho",
+    "origem": "Conta Corrente",
+    "origemTipo": "conta",
+    "data": "2024-01-10",
+    "valor": 1500.00
+  },
+  {
+    "id": 6,
+    "tipo": "despesa",
+    "descricao": "Restaurante",
+    "categoria": "Alimentação",
+    "origem": "Cartão Itaú",
+    "origemTipo": "cartao",
+    "data": "2024-01-12",
+    "valor": -85.00
+  },
+  {
+    "id": 7,
+    "tipo": "pagamento de fatura",
+    "descricao": "Fatura Cartão Nubank",
+    "categoria": "Pagamentos",
+    "origem": "Conta Corrente",
+    "origemTipo": "conta",
+    "data": "2024-01-15",
+    "valor": -850.00
+  },
+  {
+    "id": 8,
+    "tipo": "despesa",
+    "descricao": "Internet",
+    "categoria": "Utilidades",
+    "origem": "Cartão Itaú",
+    "origemTipo": "cartao",
+    "data": "2024-01-16",
+    "valor": -99.90
+  },
+  {
+    "id": 9,
+    "tipo": "receita",
+    "descricao": "Dividendos Ações",
+    "categoria": "Investimento",
+    "origem": "Conta Investimento",
+    "origemTipo": "conta",
+    "data": "2024-01-18",
+    "valor": 250.00
+  },
+  {
+    "id": 10,
+    "tipo": "despesa",
+    "descricao": "Transporte Uber",
+    "categoria": "Transporte",
+    "origem": "Cartão Nubank",
+    "origemTipo": "cartao",
+    "data": "2024-01-20",
+    "valor": -45.00
+  },
+  {
+    "id": 11,
+    "tipo": "transferencia",
+    "descricao": "Transferência PIX",
+    "categoria": "Transferência",
+    "origem": "Conta Corrente",
+    "origemTipo": "conta",
+    "data": "2024-01-22",
+    "valor": -200.00
+  },
+  {
+    "id": 12,
+    "tipo": "despesa",
+    "descricao": "Farmácia",
+    "categoria": "Saúde",
+    "origem": "Cartão Itaú",
+    "origemTipo": "cartao",
+    "data": "2024-01-25",
+    "valor": -67.80
+  },
+  {
+    "id": 13,
+    "tipo": "pagamento de fatura",
+    "descricao": "Fatura Cartão Itaú",
+    "categoria": "Pagamentos",
+    "origem": "Conta Corrente",
+    "origemTipo": "conta",
+    "data": "2024-01-28",
+    "valor": -450.00
+  },
+  {
+    "id": 14,
+    "tipo": "receita",
+    "descricao": "Reembolso Empresa",
+    "categoria": "Trabalho",
+    "origem": "Conta Corrente",
+    "origemTipo": "conta",
+    "data": "2024-01-30",
+    "valor": 320.00
+  },
+  {
+    "id": 15,
+    "tipo": "despesa",
+    "descricao": "Academia",
+    "categoria": "Saúde",
+    "origem": "Cartão Nubank",
+    "origemTipo": "cartao",
+    "data": "2024-02-01",
+    "valor": -120.00
+  }
+]
