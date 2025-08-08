@@ -52,6 +52,7 @@ type CreditCardSummaryProps = {
   favorite?: boolean
   className?: string
   usedAmount?: number
+  currentInvoice?: number
   onFavoriteClick?: () => void
 }
 
@@ -101,6 +102,7 @@ export function CreditCardSummary(props: Partial<CreditCardSummaryProps>) {
     favorite = false,
     className,
     usedAmount,
+    currentInvoice,
     onFavoriteClick,
   } = props
   const availableToShow =
@@ -165,6 +167,18 @@ export function CreditCardSummary(props: Partial<CreditCardSummaryProps>) {
             {"de "}{formatCurrencyBRL(total)}
           </p>
         </div>
+        {/* Current Invoice Panel */}
+        {typeof currentInvoice === "number" && (
+          <div className="mt-4 rounded-2xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/60 p-4">
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">{"Fatura atual"}</p>
+            <div className="mt-2 text-2xl sm:text-3xl font-normal tracking-tight">
+              {formatCurrencyBRL(currentInvoice)}
+            </div>
+            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-500">
+              Vence em {formatShortDayMonth(dueDate)}
+            </p>
+          </div>
+        )}
         {/* Dates */}
         <div className="mt-5 grid grid-cols-2 gap-4 text-sm">
           <div>
@@ -204,6 +218,7 @@ interface CreditCard {
   favorite?: boolean
   brand?: string
   bank?: string
+  currentInvoice?: number
 }
 
 export default function CartoesPage() {
@@ -218,7 +233,8 @@ export default function CartoesPage() {
       color: '#ef4444',
       favorite: true,
       brand: 'Visa Platinum',
-      bank: 'Banco do Brasil'
+      bank: 'Banco do Brasil',
+      currentInvoice: 2850
     },
     { 
       id: '2', 
@@ -230,7 +246,8 @@ export default function CartoesPage() {
       color: '#8b5cf6',
       favorite: false,
       brand: 'Mastercard Black',
-      bank: 'Nubank'
+      bank: 'Nubank',
+      currentInvoice: 1650
     },
     { 
       id: '3', 
@@ -242,7 +259,8 @@ export default function CartoesPage() {
       color: '#3b82f6',
       favorite: false,
       brand: 'Visa Infinite',
-      bank: 'Itaú Unibanco'
+      bank: 'Itaú Unibanco',
+      currentInvoice: 4200
     },
   ])
 
@@ -257,7 +275,8 @@ export default function CartoesPage() {
     color: '#ef4444',
     favorite: false,
     bank: '',
-    brand: ''
+    brand: '',
+    currentInvoice: 0
   })
 
   const limitFormat = useCurrencyFormat(formData.limit.toString())
@@ -320,7 +339,8 @@ export default function CartoesPage() {
       color: card.color,
       favorite: card.favorite || false,
       bank: card.bank || '',
-      brand: card.brand || ''
+      brand: card.brand || '',
+      currentInvoice: card.currentInvoice || 0
     })
     // Update currency format values
     limitFormat.setValue(card.limit.toString())
@@ -368,7 +388,8 @@ export default function CartoesPage() {
       color: '#ef4444',
       favorite: false,
       bank: '',
-      brand: ''
+      brand: '',
+      currentInvoice: 0
     })
     limitFormat.setValue('')
     annualFeeFormat.setValue('')
@@ -408,6 +429,7 @@ export default function CartoesPage() {
           dueDate={dueDate}
           favorite={card.favorite || false}
           usedAmount={usedAmount}
+          currentInvoice={card.currentInvoice}
           onFavoriteClick={() => handleFavoriteClick(card.id)}
         />
         <div className="absolute top-2 right-2 z-10">

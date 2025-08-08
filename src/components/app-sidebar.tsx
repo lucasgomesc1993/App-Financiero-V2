@@ -155,7 +155,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <IconChevronDown className="ml-auto h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="start" sideOffset={4} className="w-[15rem] bg-zinc-900 text-white dark:bg-zinc-100 dark:text-black border-zinc-800 dark:border-zinc-200">
                 <DropdownMenuItem onClick={() => handleTransactionClick('despesa')}>
                   <IconTrendingDown className="mr-2 h-4 w-4" />
                   Despesa

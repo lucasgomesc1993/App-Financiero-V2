@@ -80,7 +80,6 @@ export function AccountSummary(props: Partial<AccountSummaryProps>) {
       case 'corrente': return 'Conta Corrente'
       case 'poupanca': return 'Poupança'
       case 'investimento': return 'Investimento'
-      case 'credito': return 'Cartão de Crédito'
       case 'dinheiro': return 'Dinheiro'
       default: return 'Conta Corrente'
     }
@@ -164,7 +163,7 @@ export default function ContasPage() {
     balance: '',
     color: '#3b82f6',
     favorite: false,
-    type: 'corrente'
+    type: ''
   })
 
   const currencyFormat = useCurrencyFormat(formData.balance)
@@ -191,7 +190,6 @@ export default function ContasPage() {
     { name: 'Conta Corrente', value: 'corrente' },
     { name: 'Poupança', value: 'poupanca' },
     { name: 'Investimento', value: 'investimento' },
-    { name: 'Cartão de Crédito', value: 'credito' },
     { name: 'Dinheiro', value: 'dinheiro' },
   ]
 
@@ -203,11 +201,22 @@ export default function ContasPage() {
 
     if (editingAccount) {
       // Update existing account
-      setAccounts(accounts.map(acc => 
+      let updatedAccounts = accounts.map(acc => 
         acc.id === editingAccount.id 
           ? { ...acc, ...formData, balance: currencyFormat.numericValue }
           : acc
-      ))
+      )
+      
+      // Se a conta editada foi marcada como favorita, remove o favorito das outras contas
+      if (formData.favorite) {
+        updatedAccounts = updatedAccounts.map(acc => 
+          acc.id === editingAccount.id 
+            ? { ...acc, favorite: true }
+            : { ...acc, favorite: false }
+        )
+      }
+      
+      setAccounts(updatedAccounts)
       toast.success("Conta atualizada com sucesso!")
     } else {
       // Add new account
@@ -219,7 +228,19 @@ export default function ContasPage() {
         favorite: formData.favorite,
         type: formData.type
       }
-      setAccounts([...accounts, newAccount])
+      
+      let updatedAccounts = [...accounts, newAccount]
+      
+      // Se a nova conta foi marcada como favorita, remove o favorito das outras contas
+      if (formData.favorite) {
+        updatedAccounts = updatedAccounts.map(acc => 
+          acc.id === newAccount.id 
+            ? { ...acc, favorite: true }
+            : { ...acc, favorite: false }
+        )
+      }
+      
+      setAccounts(updatedAccounts)
       toast.success("Conta criada com sucesso!")
     }
 
@@ -274,7 +295,7 @@ export default function ContasPage() {
       balance: '',
       color: '#3b82f6',
       favorite: false,
-      type: 'corrente'
+      type: ''
     })
     setEditingAccount(null)
     setIsDialogOpen(false)
@@ -477,7 +498,7 @@ export default function ContasPage() {
               </div>
 
               <div className="px-4 lg:px-6">
-                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-1">
+                <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs">
                   <Card className="@container/card">
                     <CardHeader>
                       <CardDescription className="flex items-center gap-2">
@@ -570,7 +591,7 @@ export default function ContasPage() {
                 <Label htmlFor="type">Tipo</Label>
                 <Select value={formData.type} onValueChange={(value) => setFormData({...formData, type: value})}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione o tipo" />
+                    <SelectValue placeholder="Selecione o tipo de conta" />
                   </SelectTrigger>
                   <SelectContent>
                     {accountTypeOptions.map((option) => (

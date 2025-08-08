@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -48,6 +48,35 @@ const creditCards = [
 ]
 
 export function TransactionDialog({ open, onOpenChange, type }: TransactionDialogProps) {
+  // Função para gerar opções de meses para fatura
+  const getInvoiceMonths = () => {
+    const months = []
+    const currentDate = new Date()
+    const currentYear = currentDate.getFullYear()
+    const currentMonth = currentDate.getMonth()
+    
+    // Gerar meses do ano atual e próximo ano
+    for (let year = currentYear; year <= currentYear + 1; year++) {
+      const startMonth = year === currentYear ? currentMonth : 0
+      const endMonth = 12
+      
+      for (let month = startMonth; month < endMonth; month++) {
+        const date = new Date(year, month, 1)
+        const monthName = date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })
+        const value = `${year}-${String(month + 1).padStart(2, '0')}`
+        const isCurrent = year === currentYear && month === currentMonth
+        
+        months.push({
+          value,
+          label: monthName.charAt(0).toUpperCase() + monthName.slice(1),
+          isCurrent
+        })
+      }
+    }
+    
+    return months
+  }
+
   const [formData, setFormData] = useState({
     descricao: '',
     valor: '',
@@ -56,8 +85,16 @@ export function TransactionDialog({ open, onOpenChange, type }: TransactionDialo
     cartao: '',
     contaOrigem: '',
     contaDestino: '',
-    data: new Date()
+    data: new Date(),
+    fatura: '' // Novo campo para fatura
   })
+
+  // Inicializar fatura com o mês atual quando o componente montar
+  useEffect(() => {
+    const currentDate = new Date()
+    const currentMonthValue = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`
+    setFormData(prev => ({ ...prev, fatura: currentMonthValue }))
+  }, [])
 
   const currencyFormat = useCurrencyFormat(formData.valor)
 
@@ -90,6 +127,8 @@ export function TransactionDialog({ open, onOpenChange, type }: TransactionDialo
     toast.success(`${transactionType} registrada com sucesso!`)
     
     // Reset form and close
+    const currentDate = new Date()
+    const currentMonthValue = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`
     setFormData({
       descricao: '',
       valor: '',
@@ -98,7 +137,8 @@ export function TransactionDialog({ open, onOpenChange, type }: TransactionDialo
       cartao: '',
       contaOrigem: '',
       contaDestino: '',
-      data: new Date()
+      data: new Date(),
+      fatura: currentMonthValue
     })
     onOpenChange(false)
   }
@@ -110,7 +150,7 @@ export function TransactionDialog({ open, onOpenChange, type }: TransactionDialo
       case 'receita':
         return ['descricao', 'categoria', 'conta', 'data']
       case 'despesa_cartao':
-        return ['descricao', 'categoria', 'cartao', 'data']
+        return ['descricao', 'categoria', 'cartao', 'fatura', 'data']
       case 'transferencia':
         return ['contaOrigem', 'contaDestino', 'data']
       default:
@@ -313,6 +353,25 @@ export function TransactionDialog({ open, onOpenChange, type }: TransactionDialo
                   {creditCards.map((card) => (
                     <SelectItem key={card} value={card}>
                       {card}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="*:not-first:mt-2">
+              <Label htmlFor="fatura">Fatura</Label>
+              <Select value={formData.fatura} onValueChange={(value) => setFormData({...formData, fatura: value})}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecionar fatura" />
+                </SelectTrigger>
+                <SelectContent>
+                  {getInvoiceMonths().map((month) => (
+                    <SelectItem key={month.value} value={month.value}>
+                      {month.label}
+                      {month.isCurrent && (
+                        <span className="ml-2 text-xs text-blue-600">(Atual)</span>
+                      )}
                     </SelectItem>
                   ))}
                 </SelectContent>
