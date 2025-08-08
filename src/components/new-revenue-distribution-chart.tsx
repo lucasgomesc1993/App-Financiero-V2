@@ -2,7 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardAction, CardDescription } from "@/components/ui/card"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import {
   Select,
   SelectContent,
@@ -78,10 +78,12 @@ const chartConfig = {
 export function NewRevenueDistributionChart() {
   const [hoveredRevenue, setHoveredRevenue] = useState<number | null>(null)
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 })
+  const [displayTooltipPosition, setDisplayTooltipPosition] = useState({ x: 0, y: 0 })
   const [isAnimated, setIsAnimated] = useState(false)
   const [isRevenueExpanded, setIsRevenueExpanded] = useState(false)
   const [timeRange, setTimeRange] = useState("ultimos_30_dias")
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null)
+  const animationRef = useRef<number>()
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -91,30 +93,61 @@ export function NewRevenueDistributionChart() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Animação suave do tooltip
+  useEffect(() => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+    }
+
+    const animateTooltip = () => {
+      setDisplayTooltipPosition(prev => ({
+        x: prev.x + (tooltipPosition.x - prev.x) * 0.3, // Aumentado para 0.3 para resposta mais rápida
+        y: prev.y + (tooltipPosition.y - prev.y) * 0.3
+      }))
+      
+      if (
+        Math.abs(tooltipPosition.x - displayTooltipPosition.x) > 1 ||
+        Math.abs(tooltipPosition.y - displayTooltipPosition.y) > 1
+      ) {
+        animationRef.current = requestAnimationFrame(animateTooltip)
+      }
+    }
+
+    if (hoveredRevenue !== null) {
+      // Resetar a posição de exibição para a posição atual do mouse quando iniciar
+      setDisplayTooltipPosition(tooltipPosition)
+      animationRef.current = requestAnimationFrame(animateTooltip)
+    } else {
+      setDisplayTooltipPosition(tooltipPosition)
+    }
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
+  }, [tooltipPosition, hoveredRevenue])
+
   const calculateTooltipPosition = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef) return { x: 0, y: 0 }
     
     const containerRect = containerRef.getBoundingClientRect()
-    const tooltipWidth = 200 // Largura estimada do tooltip
-    const tooltipHeight = 80 // Altura estimada do tooltip
     
     // Calcular posição relativa ao container (segue o mouse)
-    let x = e.clientX - containerRef.getBoundingClientRect().left + 10
-    let y = e.clientY - containerRef.getBoundingClientRect().top - 10
+    let x = e.clientX - containerRect.left
+    let y = e.clientY - containerRect.top
     
-    // Ajustar apenas se o tooltip ultrapassar os limites do container
-    if (x + tooltipWidth > containerRect.width) {
-      x = containerRect.width - tooltipWidth - 5 // Apenas quando necessário
-    }
-    if (x < 0) {
-      x = 5
-    }
+    // Posicionar o tooltip centralizado acima do cursor
+    x = x - 100 // Centralizar horizontalmente (metade da largura estimada do tooltip)
+    y = y - 90 // Posicionar acima do cursor
     
-    if (y + tooltipHeight > containerRect.height) {
-      y = containerRect.height - tooltipHeight - 5 // Apenas quando necessário
+    // Permitir que o tooltip ultrapasse os limites, mas evitar valores extremos
+    // que poderiam causar comportamento estranho
+    if (x < -200) {
+      x = e.clientX - containerRect.left - 100 // Recalcular para seguir o mouse
     }
-    if (y < 0) {
-      y = 5
+    if (x > containerRect.width + 100) {
+      x = e.clientX - containerRect.left - 100 // Recalcular para seguir o mouse
     }
     
     return { x, y }
@@ -188,10 +221,10 @@ export function NewRevenueDistributionChart() {
           {/* Tooltip para receitas */}
           {hoveredRevenue !== null && (
             <div
-              className="absolute z-50 bg-background border border-border rounded-lg p-3 shadow-lg pointer-events-none"
+              className="absolute z-50 bg-background border border-border rounded-lg p-3 shadow-lg pointer-events-none transition-all duration-200"
               style={{
-                left: tooltipPosition.x,
-                top: tooltipPosition.y,
+                left: displayTooltipPosition.x,
+                top: displayTooltipPosition.y,
               }}
             >
               <div className="flex items-center gap-2 mb-1">
