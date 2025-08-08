@@ -381,7 +381,7 @@ export default function ContasPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-2">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                       {accounts.map(renderAccountCard)}
                     </div>
                   </CardContent>

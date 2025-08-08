@@ -564,7 +564,9 @@ export default function MetasPage() {
                       </TabsList>
                       <TabsContent value="ativas" className="space-y-4">
                         {activeGoals.length > 0 ? (
-                          activeGoals.map(renderGoalCard)
+                          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {activeGoals.map(renderGoalCard)}
+                          </div>
                         ) : (
                           <div className="text-center py-8 text-muted-foreground">
                             <Target className="mx-auto h-12 w-12 mb-4 opacity-50" />
@@ -575,7 +577,9 @@ export default function MetasPage() {
                       </TabsContent>
                       <TabsContent value="concluidas" className="space-y-4">
                         {completedGoals.length > 0 ? (
-                          completedGoals.map(renderGoalCard)
+                          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {completedGoals.map(renderGoalCard)}
+                          </div>
                         ) : (
                           <div className="text-center py-8 text-muted-foreground">
                             <CheckCircle className="mx-auto h-12 w-12 mb-4 opacity-50" />
@@ -586,7 +590,9 @@ export default function MetasPage() {
                       </TabsContent>
                       <TabsContent value="pausadas" className="space-y-4">
                         {pausedGoals.length > 0 ? (
-                          pausedGoals.map(renderGoalCard)
+                          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {pausedGoals.map(renderGoalCard)}
+                          </div>
                         ) : (
                           <div className="text-center py-8 text-muted-foreground">
                             <Clock className="mx-auto h-12 w-12 mb-4 opacity-50" />

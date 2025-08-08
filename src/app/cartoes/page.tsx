@@ -476,16 +476,16 @@ export default function CartoesPage() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                       {cards.map(renderCardCard)}
-                      {cards.length === 0 && (
-                        <div className="text-center py-8 text-muted-foreground">
-                          <CreditCard className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                          <p>Nenhum cartão cadastrado</p>
-                          <p className="text-sm">Clique em "Novo Cartão" para adicionar seu primeiro cartão</p>
-                        </div>
-                      )}
                     </div>
+                    {cards.length === 0 && (
+                      <div className="text-center py-8 text-muted-foreground col-span-full">
+                        <CreditCard className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                        <p>Nenhum cartão cadastrado</p>
+                        <p className="text-sm">Clique em "Novo Cartão" para adicionar seu primeiro cartão</p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>

@@ -499,7 +499,9 @@ export default function OrcamentosPage() {
                       </TabsList>
                       <TabsContent value="mensal" className="space-y-4">
                         {monthlyBudgets.length > 0 ? (
-                          monthlyBudgets.map(renderBudgetCard)
+                          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {monthlyBudgets.map(renderBudgetCard)}
+                          </div>
                         ) : (
                           <div className="text-center py-8 text-muted-foreground">
                             <Target className="mx-auto h-12 w-12 mb-4 opacity-50" />
@@ -510,7 +512,9 @@ export default function OrcamentosPage() {
                       </TabsContent>
                       <TabsContent value="anual" className="space-y-4">
                         {annualBudgets.length > 0 ? (
-                          annualBudgets.map(renderBudgetCard)
+                          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {annualBudgets.map(renderBudgetCard)}
+                          </div>
                         ) : (
                           <div className="text-center py-8 text-muted-foreground">
                             <Target className="mx-auto h-12 w-12 mb-4 opacity-50" />
